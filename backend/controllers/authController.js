@@ -4,7 +4,7 @@ const { User, ActivityLog } = require('../models');
 // Register user
 const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, role } = req.body;
 
     // Check if user already exists
     let user = await User.findOne({ $or: [{ email }, { username }] });
@@ -17,7 +17,7 @@ const register = async (req, res) => {
       username,
       email,
       password,
-      role: 'User', // Default role
+      role: role || 'User', // Use provided role or default to 'User'
       status: 'Active',
     });
 

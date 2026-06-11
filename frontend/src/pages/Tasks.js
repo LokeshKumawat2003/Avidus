@@ -52,8 +52,21 @@ function Tasks() {
     fetchUsers();
   }, []);
 
+  useEffect(() => {
+    if (users.length > 0 && !editingTaskId) {
+      const currentUser = users.find((u) => u._id === user?._id);
+      if (currentUser) {
+        setFormData((prev) => ({ ...prev, assignedTo: currentUser._id }));
+      }
+    }
+  }, [users, editingTaskId, user]);
+
   const resetForm = () => {
-    setFormData(initialFormData);
+    const currentUser = users.find((u) => u._id === user?._id);
+    setFormData({
+      ...initialFormData,
+      assignedTo: currentUser?._id || '',
+    });
     setEditingTaskId(null);
     setError('');
     setSuccess('');
